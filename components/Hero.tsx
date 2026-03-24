@@ -25,8 +25,8 @@ const codeLines: Line[] = [
   { num: 2,  tokens: [] },
   { num: 3,  tokens: [{ t: "const ", c: "text-vs-keyword" }, { t: "chandan", c: "text-vs-func" }, { t: ": ", c: "text-vs-text" }, { t: "Developer", c: "text-vs-cyan" }, { t: " = {", c: "text-vs-text" }] },
   { num: 4,  tokens: [{ t: "  name", c: "text-vs-blue" }, { t: ":    ", c: "text-vs-text" }, { t: '"Chandan Vishwakarma"', c: "text-vs-string" }, { t: ",", c: "text-vs-text" }] },
-  { num: 5,  tokens: [{ t: "  role", c: "text-vs-blue" }, { t: ":    ", c: "text-vs-text" }, { t: '"Full Stack Developer & TPM"', c: "text-vs-string" }, { t: ",", c: "text-vs-text" }] },
-  { num: 6,  tokens: [{ t: "  exp", c: "text-vs-blue" }, { t: ":     ", c: "text-vs-text" }, { t: '"5 years"', c: "text-vs-string" }, { t: ",", c: "text-vs-text" }] },
+  { num: 5,  tokens: [{ t: "  role", c: "text-vs-blue" }, { t: ":    ", c: "text-vs-text" }, { t: '"Technical Project Manager & Full Stack Dev"', c: "text-vs-string" }, { t: ",", c: "text-vs-text" }] },
+  { num: 6,  tokens: [{ t: "  exp", c: "text-vs-blue" }, { t: ":     ", c: "text-vs-text" }, { t: '"~6 years"', c: "text-vs-string" }, { t: ",", c: "text-vs-text" }] },
   { num: 7,  tokens: [{ t: "  projects", c: "text-vs-blue" }, { t: ": ", c: "text-vs-text" }, { t: "30", c: "text-vs-num" }, { t: ",", c: "text-vs-text" }] },
   { num: 8,  tokens: [{ t: "  location", c: "text-vs-blue" }, { t: ": ", c: "text-vs-text" }, { t: '"Varanasi, India"', c: "text-vs-string" }, { t: ",", c: "text-vs-text" }] },
   { num: 9,  tokens: [{ t: "  email", c: "text-vs-blue" }, { t: ":    ", c: "text-vs-text" }, { t: '"chandanvishwakarma.tech@gmail.com"', c: "text-vs-string" }, { t: ",", c: "text-vs-text" }] },
@@ -91,13 +91,13 @@ export default function Hero() {
       <div className="mb-4 sm:mb-6">
         <p className="text-vs-comment text-xs sm:text-sm mb-1">{"// Hi there 👋, my name is"}</p>
         <h1 className="text-[2rem] sm:text-[2.8rem] font-bold text-vs-text glow-blue leading-none tracking-tight">
-          Chandan<span className="text-vs-accent">.</span>
+          Chandan Vishwakarma<span className="text-vs-accent">.</span>
         </h1>
         <h2 className="text-base sm:text-xl text-vs-cyan mt-1.5 flex items-center gap-0">
-          Full Stack Developer & TPM<span className="cursor-blink ml-0.5" />
+          Technical Project Manager & Full Stack Developer<span className="cursor-blink ml-0.5" />
         </h2>
         <p className="text-vs-muted text-xs sm:text-sm mt-2 max-w-md leading-relaxed">
-          5 years building scalable web apps, leading teams, and shipping blockchain solutions.
+          6 years building scalable web apps, leading teams, and shipping blockchain solutions.
         </p>
       </div>
 

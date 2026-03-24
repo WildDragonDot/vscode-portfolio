@@ -60,9 +60,9 @@ export default function About() {
             <div className="flex">
               <span className="text-vs-lineNum w-6 text-right mr-4 text-[11px] shrink-0 select-none">2</span>
               <span className="text-vs-string pl-2 leading-relaxed">
-                Full Stack Developer with <span className="text-vs-num font-semibold">5 years</span> of experience in
+                Full Stack Developer with <span className="text-vs-num font-semibold">~6 years</span> of experience in
                 front-end, back-end, and blockchain development. Proven track record of delivering{" "}
-                <span className="text-vs-num font-semibold">30 production-level projects</span> on time while
+                <span className="text-vs-num font-semibold">30+ production-level projects</span> on time while
                 optimizing performance and enhancing user experience.
               </span>
             </div>

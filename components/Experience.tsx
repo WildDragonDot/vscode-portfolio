@@ -4,7 +4,7 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 
 const experiences = [
   {
-    role: "Technical Project Manager",
+    role: "Technical Project Manager / Engineering Team Lead",
     badge: "TPM",
     company: "QuadbTech",
     period: "10/2023 – Present",
