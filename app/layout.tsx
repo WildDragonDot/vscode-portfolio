@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fira_Code } from "next/font/google";
 import ThemeProvider from "@/components/ThemeProvider";
 import "./globals.css";
+import { Analytics } from '@vercel/analytics/next';
 
 const firaCode = Fira_Code({
   subsets: ["latin"],
@@ -45,6 +46,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={firaCode.variable} suppressHydrationWarning>
       <body>
         <ThemeProvider>{children}</ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
