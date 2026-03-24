@@ -23,7 +23,12 @@ export default function StatusBar({
   onOpenCmd?: () => void;
 }) {
   const [time, setTime] = useState("");
+  const [mounted, setMounted] = useState(false);
   const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -92,12 +97,12 @@ export default function StatusBar({
         </button>
         {/* Theme toggle */}
         <button
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+          onClick={() => mounted && setTheme(theme === "dark" ? "light" : "dark")}
           className="px-2 h-full flex items-center gap-1 hover:bg-white/10 cursor-pointer transition-colors border-l border-white/10 shrink-0"
           title="Toggle Light/Dark theme"
         >
-          {theme === "dark" ? <Sun size={11} /> : <Moon size={11} />}
-          <span className="hidden sm:inline text-[10px]">{theme === "dark" ? "Light" : "Dark"}</span>
+          {mounted && (theme === "dark" ? <Sun size={11} /> : <Moon size={11} />)}
+          <span className="hidden sm:inline text-[10px]">{mounted ? (theme === "dark" ? "Light" : "Dark") : ""}</span>
         </button>
       </div>
     </div>
