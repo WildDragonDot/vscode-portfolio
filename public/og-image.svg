@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="50%" stop-color="#161b22"/>
+      <stop offset="100%" stop-color="#1e1e1e"/>
+    </linearGradient>
+    <linearGradient id="blueGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#007acc"/>
+      <stop offset="100%" stop-color="#4ec9b0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- VS Code styled border -->
+  <rect x="30" y="30" width="1140" height="570" rx="16" fill="#1e1e1e" stroke="#30363d" stroke-width="3"/>
+  
+  <!-- Window Header -->
+  <rect x="30" y="30" width="1140" height="50" rx="16" fill="#252526"/>
+  <circle cx="65" cy="55" r="7" fill="#ff5f57"/>
+  <circle cx="90" cy="55" r="7" fill="#febc2e"/>
+  <circle cx="115" cy="55" r="7" fill="#28c840"/>
+  <text x="600" y="60" fill="#858585" font-family="monospace" font-size="16" text-anchor="middle">chandan-portfolio — Visual Studio Code</text>
+
+  <!-- Left Code Mock -->
+  <g transform="translate(70, 130)">
+    <text x="0" y="0" fill="#6a9955" font-family="monospace" font-size="20">// Technical Project Manager &amp; Full Stack Developer</text>
+    <text x="0" y="45" fill="#569cd6" font-family="monospace" font-size="28" font-weight="bold">const developer = {</text>
+    <text x="40" y="90" fill="#9cdcfe" font-family="monospace" font-size="24">name: <tspan fill="#ce9178">"Chandan Vishwakarma"</tspan>,</text>
+    <text x="40" y="130" fill="#9cdcfe" font-family="monospace" font-size="24">experience: <tspan fill="#ce9178">"~6 Years"</tspan>,</text>
+    <text x="40" y="170" fill="#9cdcfe" font-family="monospace" font-size="24">projects: <tspan fill="#b5cea8">58</tspan>,</text>
+    <text x="40" y="210" fill="#9cdcfe" font-family="monospace" font-size="24">skills: [<tspan fill="#ce9178">"React"</tspan>, <tspan fill="#ce9178">"Node.js"</tspan>, <tspan fill="#ce9178">"ICP Blockchain"</tspan>, <tspan fill="#ce9178">"AWS"</tspan>],</text>
+    <text x="40" y="250" fill="#9cdcfe" font-family="monospace" font-size="24">openToWork: <tspan fill="#569cd6">true</tspan></text>
+    <text x="0" y="295" fill="#569cd6" font-family="monospace" font-size="28" font-weight="bold">};</text>
+  </g>
+
+  <!-- Right Hero Card -->
+  <rect x="750" y="120" width="370" height="420" rx="14" fill="#252526" stroke="#3c3c3c" stroke-width="2"/>
+  <circle cx="935" cy="220" r="60" fill="#1e1e1e" stroke="url(#blueGlow)" stroke-width="4"/>
+  <text x="935" y="235" font-family="monospace" font-size="34" font-weight="bold" fill="url(#blueGlow)" text-anchor="middle">&lt;CV /&gt;</text>
+  <text x="935" y="325" fill="#ffffff" font-family="monospace" font-size="22" font-weight="bold" text-anchor="middle">Chandan Vishwakarma</text>
+  <text x="935" y="360" fill="#4ec9b0" font-family="monospace" font-size="15" text-anchor="middle">Full Stack &amp; Web3 Lead</text>
+  <text x="935" y="395" fill="#858585" font-family="monospace" font-size="14" text-anchor="middle">QuadbTech · Varanasi, India</text>
+  
+  <rect x="815" y="435" width="240" height="40" rx="8" fill="#007acc"/>
+  <text x="935" y="460" fill="#ffffff" font-family="monospace" font-size="15" font-weight="bold" text-anchor="middle">chandandev.online</text>
+</svg>

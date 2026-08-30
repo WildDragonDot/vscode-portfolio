@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useTheme } from "next-themes";
 import { TabId } from "@/app/page";
-import { GitBranch, AlertCircle, Bell, Zap, Sun, Moon } from "lucide-react";
+import { GitBranch, AlertCircle, Bell, Zap, Sun, Moon, Terminal as TermIcon } from "lucide-react";
 
 const info: Record<TabId, { lang: string }> = {
   home:         { lang: "TypeScript JSX" },
@@ -10,7 +10,7 @@ const info: Record<TabId, { lang: string }> = {
   experience:   { lang: "TypeScript JSX" },
   skills:       { lang: "TypeScript JSX" },
   projects:     { lang: "TypeScript JSX" },
-  contact:      { lang: "Terminal" },
+  contact:      { lang: "TypeScript JSX" },
   testimonials: { lang: "TypeScript JSX" },
   blog:         { lang: "Markdown" },
 };
@@ -18,9 +18,13 @@ const info: Record<TabId, { lang: string }> = {
 export default function StatusBar({
   activeTab,
   onOpenCmd,
+  onToggleTerminal,
+  terminalOpen,
 }: {
   activeTab: TabId;
   onOpenCmd?: () => void;
+  onToggleTerminal?: () => void;
+  terminalOpen?: boolean;
 }) {
   const [time, setTime] = useState("");
   const [mounted, setMounted] = useState(false);
@@ -42,52 +46,79 @@ export default function StatusBar({
 
   return (
     <div
-      className="flex items-center justify-between bg-vs-statusBar text-white text-[11px] px-0 shrink-0 font-mono overflow-hidden"
+      className="flex items-center justify-between bg-vs-statusBar text-white text-[11px] px-0 shrink-0 font-mono overflow-hidden select-none"
       style={{ height: 22 }}
     >
-      {/* Left — hide most items on mobile */}
+      {/* Left items */}
       <div className="flex items-center h-full min-w-0">
-        <div className="flex items-center gap-1.5 px-2 h-full hover:bg-white/10 cursor-pointer transition-colors border-r border-white/10 shrink-0">
+        <a
+          href="https://github.com/WildDragonDot"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-1.5 px-2 h-full hover:bg-white/10 cursor-pointer transition-colors border-r border-white/10 shrink-0"
+          title="Git repository (main)"
+        >
           <GitBranch size={12} />
           <span>main</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-1 px-2 h-full hover:bg-white/10 cursor-pointer transition-colors shrink-0">
+        </a>
+
+        {/* Problems Trigger */}
+        <button
+          onClick={onToggleTerminal}
+          className="flex items-center gap-1 px-2 h-full hover:bg-white/10 cursor-pointer transition-colors border-r border-white/10 shrink-0"
+          title="Toggle Problems / Terminal Panel (⌘J)"
+        >
           <AlertCircle size={11} />
           <span>0</span>
-          <span className="opacity-50 mx-1">⚠</span>
+          <span className="opacity-50 mx-0.5">⚠</span>
           <span>0</span>
-        </div>
-        <div className="hidden sm:flex items-center gap-1 px-2 h-full hover:bg-white/10 cursor-pointer transition-colors shrink-0">
+        </button>
+
+        {/* Terminal Quick Toggle */}
+        <button
+          onClick={onToggleTerminal}
+          className={`hidden sm:flex items-center gap-1 px-2 h-full hover:bg-white/10 cursor-pointer transition-colors border-r border-white/10 shrink-0 ${
+            terminalOpen ? "bg-white/20" : ""
+          }`}
+          title="Toggle Integrated Terminal (⌘J)"
+        >
+          <TermIcon size={11} />
+          <span>Terminal</span>
+        </button>
+
+        <div className="hidden md:flex items-center gap-1 px-2 h-full hover:bg-white/10 cursor-pointer transition-colors border-r border-white/10 shrink-0">
           <Zap size={11} className="text-yellow-300" />
-          <span className="text-yellow-300">Prettier</span>
+          <span className="text-yellow-200">Prettier</span>
         </div>
-        {/* Open to Work */}
-        <div className="flex items-center gap-1.5 px-2 h-full bg-green-700/40 border-l border-white/10 cursor-default shrink-0">
+
+        {/* Open to Work Badge */}
+        <div className="flex items-center gap-1.5 px-2 h-full bg-green-700/50 border-r border-white/10 cursor-default shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shrink-0" />
-          <span className="text-green-300 text-[10px] hidden xs:inline">Open to Work</span>
-          <span className="text-green-300 text-[10px] xs:hidden">OtW</span>
+          <span className="text-green-200 text-[10px] hidden xs:inline">Open to Work</span>
+          <span className="text-green-200 text-[10px] xs:hidden">OtW</span>
         </div>
       </div>
 
-      {/* Right — hide verbose items on mobile */}
+      {/* Right items */}
       <div className="flex items-center h-full min-w-0">
         <span className="px-2 h-full flex items-center hover:bg-white/10 cursor-pointer transition-colors border-l border-white/10 shrink-0 text-[10px]">
-          {info[activeTab].lang}
+          {info[activeTab]?.lang || "TypeScript"}
         </span>
+
         <span className="hidden md:flex px-2 h-full items-center hover:bg-white/10 cursor-pointer transition-colors border-l border-white/10 shrink-0">
           UTF-8
         </span>
-        <span className="hidden md:flex px-2 h-full items-center hover:bg-white/10 cursor-pointer transition-colors border-l border-white/10 shrink-0">
-          LF
-        </span>
+
         <span className="hidden lg:flex px-2 h-full items-center hover:bg-white/10 cursor-pointer transition-colors border-l border-white/10 shrink-0">
           Spaces: 2
         </span>
+
         {time && (
           <span className="hidden sm:flex px-2 h-full items-center bg-white/5 border-l border-white/10 tabular-nums shrink-0">
             🕐 {time}
           </span>
         )}
+
         <button
           onClick={onOpenCmd}
           className="px-2 h-full flex items-center hover:bg-white/10 cursor-pointer transition-colors border-l border-white/10 shrink-0"
@@ -95,11 +126,12 @@ export default function StatusBar({
         >
           <Bell size={11} />
         </button>
+
         {/* Theme toggle */}
         <button
           onClick={() => mounted && setTheme(theme === "dark" ? "light" : "dark")}
           className="px-2 h-full flex items-center gap-1 hover:bg-white/10 cursor-pointer transition-colors border-l border-white/10 shrink-0"
-          title="Toggle Light/Dark theme"
+          title="Toggle Light/Dark Theme"
         >
           {mounted && (theme === "dark" ? <Sun size={11} /> : <Moon size={11} />)}
           <span className="hidden sm:inline text-[10px]">{mounted ? (theme === "dark" ? "Light" : "Dark") : ""}</span>

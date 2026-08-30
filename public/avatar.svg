@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160">
+  <defs>
+    <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#007acc"/>
+      <stop offset="100%" stop-color="#4ec9b0"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1e1e1e"/>
+      <stop offset="100%" stop-color="#2d2d2d"/>
+    </linearGradient>
+  </defs>
+  <!-- Background Circle -->
+  <rect width="160" height="160" rx="80" fill="url(#bgGrad)" stroke="url(#avatarGrad)" stroke-width="4"/>
+  
+  <!-- Stylized Tech Figure -->
+  <circle cx="80" cy="58" r="28" fill="#3c3c3c" stroke="#569cd6" stroke-width="2"/>
+  
+  <!-- Glasses / Developer style -->
+  <rect x="62" y="52" width="14" height="10" rx="3" fill="none" stroke="#4ec9b0" stroke-width="2.5"/>
+  <rect x="84" y="52" width="14" height="10" rx="3" fill="none" stroke="#4ec9b0" stroke-width="2.5"/>
+  <line x1="76" y1="57" x2="84" y2="57" stroke="#4ec9b0" stroke-width="2.5"/>
+
+  <!-- Smile -->
+  <path d="M 72 70 Q 80 77 88 70" fill="none" stroke="#d4d4d4" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Body / Hoodie with Code bracket motif -->
+  <path d="M 36 142 C 36 104 54 94 80 94 C 106 94 124 104 124 142 Z" fill="#252526" stroke="#3c3c3c" stroke-width="2"/>
+  
+  <!-- Code brackets on chest -->
+  <text x="80" y="124" font-family="monospace" font-size="16" font-weight="bold" fill="url(#avatarGrad)" text-anchor="middle">&lt;CV /&gt;</text>
+</svg>

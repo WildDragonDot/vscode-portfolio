@@ -5,6 +5,11 @@ out/
 # dependencies
 node_modules/
 
+# env files
+.env*.local
+.env.local
+
 # misc
 .DS_Store
 .env.next/
+

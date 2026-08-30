@@ -36,7 +36,7 @@ export default function CommandPalette({
     { id: "contact",      label: "Go to Contact",      description: "contact.tsx",      icon: <Mail size={14} />,        action: () => { onNavigate("contact");      onClose(); }, category: "Navigation" },
     { id: "github",       label: "Open GitHub",        description: "github.com/WildDragonDot", icon: <ArrowRight size={14} />, action: () => { window.open("https://github.com/WildDragonDot", "_blank"); onClose(); }, category: "External" },
     { id: "linkedin",     label: "Open LinkedIn",      description: "linkedin.com/in/chandanvishwakarma007", icon: <ArrowRight size={14} />, action: () => { window.open("https://www.linkedin.com/in/chandanvishwakarma007", "_blank"); onClose(); }, category: "External" },
-    { id: "website",      label: "Open Website",       description: "cpdevs.com", icon: <ArrowRight size={14} />, action: () => { window.open("https://cpdevs.com/", "_blank"); onClose(); }, category: "External" },
+    { id: "website",      label: "Open Website",       description: "chandandev.online", icon: <ArrowRight size={14} />, action: () => { window.open("https://chandandev.online/", "_blank"); onClose(); }, category: "External" },
     { id: "resume",       label: "Download Resume",    description: "Chandan_Vishwakarma_Resume.pdf", icon: <ArrowRight size={14} />, action: () => { window.open("/Chandan_Vishwakarma_Resume.pdf", "_blank"); onClose(); }, category: "External" },
   ];
 

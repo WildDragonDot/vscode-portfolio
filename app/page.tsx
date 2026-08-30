@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback, useRef } from "react";
+import { useTheme } from "next-themes";
 import ActivityBar from "@/components/ActivityBar";
 import Sidebar from "@/components/Sidebar";
 import Tabs from "@/components/Tabs";
@@ -17,6 +18,8 @@ import Testimonials from "@/components/Testimonials";
 import Blog from "@/components/Blog";
 import MobileNav from "@/components/MobileNav";
 import SettingsPanel from "@/components/SettingsPanel";
+import TerminalPanel from "@/components/TerminalPanel";
+import { Keyboard, X } from "lucide-react";
 
 export type TabId = "home" | "about" | "experience" | "skills" | "projects" | "testimonials" | "blog" | "contact";
 
@@ -69,17 +72,21 @@ function Minimap() {
 }
 
 export default function Home() {
-  const [activeTab, setActiveTab]     = useState<TabId>("home");
-  const [openTabs, setOpenTabs]       = useState<TabId[]>(["home"]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [loaded, setLoaded]           = useState(false);
-  const [cmdOpen, setCmdOpen]         = useState(false);
+  const [activeTab, setActiveTab]         = useState<TabId>("home");
+  const [openTabs, setOpenTabs]           = useState<TabId[]>(["home"]);
+  const [sidebarOpen, setSidebarOpen]     = useState(false);
+  const [terminalOpen, setTerminalOpen]   = useState(false);
+  const [loaded, setLoaded]               = useState(false);
+  const [cmdOpen, setCmdOpen]             = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [settingsOpen, setSettingsOpen]   = useState(false);
-  const [toasts, setToasts]           = useState<Toast[]>([]);
-  const toastIdRef                    = useRef(0);
+  const [shortcutsOpen, setShortcutsOpen] = useState(false);
+  const [toasts, setToasts]               = useState<Toast[]>([]);
+  const toastIdRef                        = useRef(0);
 
-  // sidebar open by default only on desktop
+  const { setTheme } = useTheme();
+
+  // Open sidebar by default on desktop
   useEffect(() => {
     if (window.innerWidth >= 768) setSidebarOpen(true);
   }, []);
@@ -93,7 +100,7 @@ export default function Home() {
     setToasts((p) => p.filter((t) => t.id !== id));
   }, []);
 
-  // Splash — skip on key OR tap
+  // Splash Screen skip handling
   useEffect(() => {
     if (loaded) return;
     const skip = () => setLoaded(true);
@@ -107,24 +114,8 @@ export default function Home() {
 
   const handleSplashDone = useCallback(() => {
     setLoaded(true);
-    setTimeout(() => addToast("Welcome!", "Chandan's portfolio loaded.", "success"), 500);
+    setTimeout(() => addToast("Workspace Ready", "Welcome to Chandan Vishwakarma's portfolio.", "success"), 500);
   }, [addToast]);
-
-  // Keyboard shortcuts
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") { e.preventDefault(); setCmdOpen((p) => !p); }
-      const tabOrder: TabId[] = ["home","about","experience","skills","projects","testimonials","blog","contact"];
-      if ((e.metaKey || e.ctrlKey) && ["1","2","3","4","5","6","7","8"].includes(e.key)) {
-        e.preventDefault();
-        const idx = parseInt(e.key) - 1;
-        if (tabOrder[idx]) openTab(tabOrder[idx]);
-      }
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [openTabs]);
 
   const openTab = (tab: TabId) => {
     if (!openTabs.includes(tab)) setOpenTabs((p) => [...p, tab]);
@@ -135,9 +126,39 @@ export default function Home() {
   const closeTab = (tab: TabId, e: React.MouseEvent) => {
     e.stopPropagation();
     const next = openTabs.filter((t) => t !== tab);
-    if (next.length === 0) { setOpenTabs(["home"]); setActiveTab("home"); }
-    else { setOpenTabs(next); if (activeTab === tab) setActiveTab(next[next.length - 1]); }
+    if (next.length === 0) {
+      setOpenTabs(["home"]);
+      setActiveTab("home");
+    } else {
+      setOpenTabs(next);
+      if (activeTab === tab) setActiveTab(next[next.length - 1]);
+    }
   };
+
+  // Keyboard Shortcuts handler
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const isCmd = e.metaKey || e.ctrlKey;
+      if (isCmd && e.key === "k") {
+        e.preventDefault();
+        setCmdOpen((p) => !p);
+      } else if (isCmd && e.key === "b") {
+        e.preventDefault();
+        setSidebarOpen((p) => !p);
+      } else if ((isCmd && e.key === "j") || (isCmd && e.key === "`")) {
+        e.preventDefault();
+        setTerminalOpen((p) => !p);
+      } else if (isCmd && ["1","2","3","4","5","6","7","8"].includes(e.key)) {
+        e.preventDefault();
+        const tabOrder: TabId[] = ["home","about","experience","skills","projects","testimonials","blog","contact"];
+        const idx = parseInt(e.key) - 1;
+        if (tabOrder[idx]) openTab(tabOrder[idx]);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openTabs]);
 
   const tabComponents: Record<TabId, React.ReactNode> = {
     home:         <Hero />,
@@ -151,12 +172,40 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col h-[100dvh] bg-vs-bg overflow-hidden">
+    <div className="flex flex-col h-[100dvh] bg-vs-bg overflow-hidden select-none">
       {!loaded && <SplashScreen onDone={handleSplashDone} />}
 
-      <CommandPalette open={cmdOpen} onClose={() => setCmdOpen(false)} onNavigate={(tab) => openTab(tab as TabId)} />
+      <CommandPalette
+        open={cmdOpen}
+        onClose={() => setCmdOpen(false)}
+        onNavigate={(tab) => openTab(tab as TabId)}
+      />
       <Notifications toasts={toasts} onRemove={removeToast} />
       <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+
+      {/* Shortcuts Helper Modal */}
+      {shortcutsOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" onClick={() => setShortcutsOpen(false)}>
+          <div className="bg-vs-bg2 border border-vs-border2 rounded-lg p-5 max-w-md w-full shadow-2xl font-mono text-[12px]" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between pb-3 border-b border-vs-border mb-4">
+              <div className="flex items-center gap-2">
+                <Keyboard size={15} className="text-vs-accent" />
+                <span className="text-vs-text font-bold">Keyboard Shortcuts</span>
+              </div>
+              <button onClick={() => setShortcutsOpen(false)} className="text-vs-muted hover:text-vs-text">
+                <X size={14} />
+              </button>
+            </div>
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between"><span className="text-vs-muted">Command Palette</span><kbd className="bg-vs-bg3 px-2 py-0.5 rounded border border-vs-border text-vs-cyan">⌘K / Ctrl+K</kbd></div>
+              <div className="flex items-center justify-between"><span className="text-vs-muted">Toggle Terminal Panel</span><kbd className="bg-vs-bg3 px-2 py-0.5 rounded border border-vs-border text-vs-cyan">⌘J / Ctrl+`</kbd></div>
+              <div className="flex items-center justify-between"><span className="text-vs-muted">Toggle Sidebar Explorer</span><kbd className="bg-vs-bg3 px-2 py-0.5 rounded border border-vs-border text-vs-cyan">⌘B / Ctrl+B</kbd></div>
+              <div className="flex items-center justify-between"><span className="text-vs-muted">Quick Tab Switch</span><kbd className="bg-vs-bg3 px-2 py-0.5 rounded border border-vs-border text-vs-cyan">⌘1 – ⌘8</kbd></div>
+              <div className="flex items-center justify-between"><span className="text-vs-muted">Print / PDF Export</span><kbd className="bg-vs-bg3 px-2 py-0.5 rounded border border-vs-border text-vs-cyan">⌘P / Ctrl+P</kbd></div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Mobile nav drawer */}
       <MobileNav
@@ -173,23 +222,37 @@ export default function Home() {
           <span className="w-3 h-3 rounded-full bg-[#febc2e]" />
           <span className="w-3 h-3 rounded-full bg-[#28c840]" />
         </div>
+
         <button
           onClick={() => setCmdOpen(true)}
-          className="flex items-center gap-2 px-3 py-1 bg-vs-bg2 hover:bg-vs-border rounded text-vs-muted hover:text-vs-text transition-colors text-[11px] font-mono"
+          className="flex items-center gap-2 px-3 py-1 bg-vs-bg2 hover:bg-vs-border rounded text-vs-muted hover:text-vs-text transition-colors text-[11px] font-mono border border-vs-border/50"
         >
           <span>🔍</span>
-          <span className="hidden sm:inline">chandan-portfolio</span>
-          <span className="ml-1 opacity-50 text-[10px]">⌘K</span>
+          <span className="hidden sm:inline">chandan-portfolio — {activeTab}.tsx</span>
+          <span className="ml-1 opacity-50 text-[10px] bg-vs-bg3 px-1 rounded">⌘K</span>
         </button>
-        <div className="w-16" />
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShortcutsOpen(true)}
+            className="text-vs-muted hover:text-vs-text text-[11px] hidden sm:flex items-center gap-1 transition-colors"
+            title="View Keyboard Shortcuts"
+          >
+            <Keyboard size={13} />
+          </button>
+        </div>
       </div>
 
       {/* ── Menu Bar — hidden on mobile ── */}
       <div className="hidden md:flex items-center gap-0.5 px-2 py-0.5 bg-vs-bg2 text-[11px] text-vs-muted border-b border-vs-border shrink-0" data-hide-print>
-        {["File","Edit","Selection","View","Go","Run","Terminal","Help"].map((m) => (
-          <span key={m} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">{m}</span>
-        ))}
-        <span className="ml-auto text-[10px] opacity-50 pr-2">⌘K palette · ⌘1-8 tabs</span>
+        <span onClick={() => openTab("home")} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">File</span>
+        <span onClick={() => setCmdOpen(true)} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">Edit</span>
+        <span onClick={() => setSidebarOpen((p) => !p)} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">View</span>
+        <span onClick={() => setCmdOpen(true)} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">Go</span>
+        <span onClick={() => openTab("projects")} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">Run</span>
+        <span onClick={() => setTerminalOpen((p) => !p)} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">Terminal</span>
+        <span onClick={() => setShortcutsOpen(true)} className="px-2 py-0.5 rounded hover:bg-vs-border/40 hover:text-vs-text cursor-pointer transition-colors">Help</span>
+        <span className="ml-auto text-[10px] opacity-60 pr-2">⌘K palette · ⌘J terminal · ⌘B sidebar</span>
       </div>
 
       {/* ── Body ── */}
@@ -203,6 +266,8 @@ export default function Home() {
             onToggleSidebar={() => setSidebarOpen((p) => !p)}
             onOpenCmd={() => setCmdOpen(true)}
             onOpenSettings={() => setSettingsOpen(true)}
+            onToggleTerminal={() => setTerminalOpen((p) => !p)}
+            terminalOpen={terminalOpen}
           />
         </div>
 
@@ -228,12 +293,25 @@ export default function Home() {
             </div>
             <Minimap />
           </div>
+
+          {/* Integrated Terminal Bottom Panel */}
+          <TerminalPanel
+            open={terminalOpen}
+            onClose={() => setTerminalOpen(false)}
+            onNavigate={openTab}
+            onThemeChange={(t) => setTheme(t)}
+          />
         </div>
       </div>
 
-      {/* StatusBar — simplified on mobile */}
+      {/* StatusBar */}
       <div data-hide-print>
-        <StatusBar activeTab={activeTab} onOpenCmd={() => setCmdOpen(true)} />
+        <StatusBar
+          activeTab={activeTab}
+          onOpenCmd={() => setCmdOpen(true)}
+          onToggleTerminal={() => setTerminalOpen((p) => !p)}
+          terminalOpen={terminalOpen}
+        />
       </div>
 
       {/* ── Mobile bottom nav ── */}
@@ -247,11 +325,12 @@ export default function Home() {
           </svg>
           <span className="text-[9px]">Menu</span>
         </button>
+
         {(["home","about","experience","projects","contact"] as TabId[]).map((tab) => (
           <button
             key={tab}
             onClick={() => openTab(tab)}
-            className={`flex flex-col items-center gap-0.5 px-2 py-1 transition-colors ${activeTab === tab ? "text-vs-accent" : "text-vs-muted hover:text-vs-text"}`}
+            className={`flex flex-col items-center gap-0.5 px-2 py-1 transition-colors ${activeTab === tab ? "text-vs-accent font-semibold" : "text-vs-muted hover:text-vs-text"}`}
           >
             <span className="text-[14px]">
               {tab === "home" ? "🏠" : tab === "about" ? "👤" : tab === "experience" ? "💼" : tab === "projects" ? "📁" : "✉"}
@@ -259,12 +338,15 @@ export default function Home() {
             <span className="text-[9px] capitalize">{tab}</span>
           </button>
         ))}
+
         <button
-          onClick={() => setCmdOpen(true)}
-          className="flex flex-col items-center gap-0.5 px-3 py-1 text-vs-muted hover:text-vs-text transition-colors"
+          onClick={() => setTerminalOpen((p) => !p)}
+          className={`flex flex-col items-center gap-0.5 px-3 py-1 transition-colors ${
+            terminalOpen ? "text-vs-accent font-semibold" : "text-vs-muted hover:text-vs-text"
+          }`}
         >
-          <span className="text-[14px]">🔍</span>
-          <span className="text-[9px]">Search</span>
+          <span className="text-[14px]">💻</span>
+          <span className="text-[9px]">Terminal</span>
         </button>
       </div>
     </div>
